@@ -7,12 +7,16 @@ import {
   Image,
   Input,
   SimpleGrid,
+  Spacer,
   Text,
 } from "@chakra-ui/react";
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import { useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount, useEnsAddress } from "wagmi"
 
 function App() {
+  const {address} = useAccount();
   const [userAddress, setUserAddress] = useState("");
   const [results, setResults] = useState([]);
   const [hasQueried, setHasQueried] = useState(false);
@@ -24,7 +28,7 @@ function App() {
       apiKey: ALCHEMY_API_KEY,
       network: Network.ETH_MAINNET,
     };
-
+    console.log(address.toString());
     const alchemy = new Alchemy(config);
     const data = await alchemy.core.getTokenBalances(userAddress);
 
@@ -44,6 +48,14 @@ function App() {
   }
   return (
     <Box w="100vw">
+      <Box w="100%">
+        <Center>
+          <Spacer />
+          <Heading>
+            <ConnectButton />
+          </Heading>
+        </Center>
+      </Box>
       <Center>
         <Flex
           alignItems={"center"}
